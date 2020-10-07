@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using static Define;
 
-public class PlayerController : CreatureController
+public class MonsterController : CreatureController
 {
     protected override void Init()
     {
@@ -14,13 +14,7 @@ public class PlayerController : CreatureController
 
     protected override void UpdateController()
     {
-        GetDirInput();
         base.UpdateController();
-    }
-
-    private void LateUpdate()
-    {
-        Camera.main.transform.position = new Vector3(transform.position.x, transform.position.y, -10);
     }
 
     /// <summary>
