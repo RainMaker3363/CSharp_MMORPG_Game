@@ -21,7 +21,6 @@ public class PlayerController : CreatureController
         {
             case CreatureState.Idle:
                 GetDirInput();
-                GetIdleInput();
                 break;
 
             case CreatureState.Moving:
@@ -161,8 +160,15 @@ public class PlayerController : CreatureController
         }
     }
 
-    void GetIdleInput()
+    protected override void UpdateIdle()
     {
+        // 이동 상태로 갈지 확인
+        if(Dir != MoveDir.None)
+        {
+            State = CreatureState.Moving;
+            return;
+        }
+
         if (Input.GetKey(KeyCode.Space))
         {
             State = CreatureState.Skill;

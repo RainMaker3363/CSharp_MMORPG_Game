@@ -23,8 +23,8 @@ public class GameScene : BaseScene
 
             Vector3Int pos = new Vector3Int()
             {
-                x = Random.Range(-20, 20),
-                y = Random.Range(-10, 10)
+                x = Random.Range(Managers.Map.MinX + 2, Managers.Map.MaxX - 2),
+                y = Random.Range(Managers.Map.MinY + 2, Managers.Map.MaxY - 2)
             };
 
             MonsterController mc = monster.GetComponent<MonsterController>();
