@@ -6,6 +6,7 @@ using static Define;
 
 public class CreatureController : MonoBehaviour
 {
+    [SerializeField]
     public float _speed = 5.0f;
 
     public Vector3Int CellPos = Vector3Int.zero;
@@ -14,6 +15,7 @@ public class CreatureController : MonoBehaviour
 
     protected SpriteRenderer _sprite;
 
+    [SerializeField]
     protected CreatureState _state = CreatureState.Idle;
     public virtual CreatureState State
     {
@@ -28,6 +30,7 @@ public class CreatureController : MonoBehaviour
         }
     }
 
+    [SerializeField]
     protected MoveDir _dir = MoveDir.Down;
     protected MoveDir _lastDir = MoveDir.Down;
     public MoveDir Dir
@@ -48,6 +51,20 @@ public class CreatureController : MonoBehaviour
 
             UpdateAnimation();
         }
+    }
+
+    public MoveDir GetDirFromVec(Vector3Int dir)
+    {
+        if (dir.x > 0)
+            return MoveDir.Right;
+        else if (dir.x < 0)
+            return MoveDir.Left;
+        else if (dir.y > 0)
+            return MoveDir.Up;
+        else if (dir.y < 0)
+            return MoveDir.Down;
+        else
+            return MoveDir.None;
     }
 
     public Vector3Int GetFrontCellPos()
