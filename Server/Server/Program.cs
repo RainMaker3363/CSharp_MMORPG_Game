@@ -5,7 +5,9 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using ServerCore;
-
+using Google.Protobuf.Protocol;
+using static Google.Protobuf.Protocol.Person.Types;
+using Google.Protobuf;
 
 namespace Server
 {
@@ -13,15 +15,9 @@ namespace Server
     class Program
     {
         static Listener _listener = new Listener();
-        public static GameRoom Room = new GameRoom();
 
         static void FlushRoom()
         {
-            Room.Push(() =>
-            {
-                Room.Flush();
-            });
-
             JobTimer.Instance.Push(FlushRoom, 250);
         }
 
