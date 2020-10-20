@@ -14,6 +14,9 @@ public class Managers : MonoBehaviour
     ObjectManager _Object = new ObjectManager();
     public static ObjectManager Object { get{ return Instance._Object; } }
 
+    NetworkManager _network = new NetworkManager();
+    public static NetworkManager Network { get { return Instance._network; } }
+
 	#endregion
 
 	#region Core
@@ -39,7 +42,7 @@ public class Managers : MonoBehaviour
 
     void Update()
     {
-
+        _network.Update();
     }
 
     static void Init()
@@ -59,6 +62,7 @@ public class Managers : MonoBehaviour
             s_instance._data.Init();
             s_instance._pool.Init();
             s_instance._sound.Init();
+            s_instance._network.Init();
         }		
 	}
 
