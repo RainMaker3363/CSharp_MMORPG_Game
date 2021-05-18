@@ -138,7 +138,7 @@ public class MonsterController : CreatureController
 
 
         // 몬스터를 오브젝트 매니저에서 삭제
-        Managers.Object.Remove(this.gameObject);
+        Managers.Object.Remove(Id);
         // 리소스도 삭제합니다.
         Managers.Resource.Destroy(this.gameObject);
     }
