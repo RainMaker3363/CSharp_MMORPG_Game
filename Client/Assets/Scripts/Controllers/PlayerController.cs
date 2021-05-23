@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Google.Protobuf.Protocol;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -22,9 +23,12 @@ public class PlayerController : CreatureController
 
     protected override void UpdateAnimation()
     {
+        if (_animator == null || _sprite == null)
+            return;
+
         if (State == CreatureState.Idle)
         {
-            switch (_lastDir)
+            switch (Dir)
             {
                 case MoveDir.Up:
                     {
@@ -57,7 +61,7 @@ public class PlayerController : CreatureController
         }
         else if (State == CreatureState.Moving)
         {
-            switch (_dir)
+            switch (Dir)
             {
                 case MoveDir.Up:
                     _animator.Play("WALK_BACK");
@@ -83,7 +87,7 @@ public class PlayerController : CreatureController
         }
         else if (State == CreatureState.Skill)
         {
-            switch (_lastDir)
+            switch (Dir)
             {
                 case MoveDir.Up:
                     _animator.Play(_rangeSkill ? "ATTACK_WEAPON_BACK" : "ATTACK_BACK");
@@ -113,41 +117,39 @@ public class PlayerController : CreatureController
         }
     }
 
-    protected override void UpdateIdle()
+    public void UseSkill(int skillid)
     {
-        // 이동 상태로 갈지 확인
-        if(Dir != MoveDir.None)
+        if(skillid == 1)
         {
-            State = CreatureState.Moving;
-            return;
+            _coSkill = StartCoroutine("coPunchSkill");
         }
+    }
+
+    protected virtual void CheckUpdatedFlag()
+    {
+
     }
 
     IEnumerator coPunchSkill()
     {
-        // 피격 판정
-        GameObject go = Managers.Object.Find(GetFrontCellPos());
-        if(go != null)
-        {
-            CreatureController cc = go.GetComponent<CreatureController>();
-            if (cc != null)
-                cc.OnDamaged();
-        }
-
         _rangeSkill = false;
+
+        State = CreatureState.Skill;
 
         // 대기 시간
         yield return new WaitForSeconds(0.5f);
 
         State = CreatureState.Idle;
         _coSkill = null;
+
+        CheckUpdatedFlag();
     }
 
     IEnumerator coStartShootArrow()
     {
         GameObject go = Managers.Resource.Instantiate("Creature/Arrow");
         ArrowController ac = go.GetComponent<ArrowController>();
-        ac.Dir = _lastDir;
+        ac.Dir = Dir;
         ac.CellPos = CellPos;
 
         _rangeSkill = true;

@@ -1,4 +1,5 @@
-﻿using JetBrains.Annotations;
+﻿using Google.Protobuf.Protocol;
+using JetBrains.Annotations;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -26,10 +27,10 @@ public class MonsterController : CreatureController
 
     public override CreatureState State
     {
-        get { return _state; }
+        get { return PosInfo.State; }
         set
         {
-            if (_state == value)
+            if (PosInfo.State == value)
                 return;
 
             base.State = value;
@@ -52,7 +53,7 @@ public class MonsterController : CreatureController
         base.Init();
 
         State = CreatureState.Idle;
-        Dir = MoveDir.None;
+        Dir = MoveDir.Down;
 
         _speed = 3.0f;
         _rangeSkill = (Random.Range(0, 2) == 0) ? true : false;
@@ -215,7 +216,7 @@ public class MonsterController : CreatureController
     {
         GameObject go = Managers.Resource.Instantiate("Creature/Arrow");
         ArrowController ac = go.GetComponent<ArrowController>();
-        ac.Dir = _lastDir;
+        ac.Dir = Dir;
         ac.CellPos = CellPos;
 
 
