@@ -44,7 +44,7 @@ public class MyPlayerController : PlayerController
             Debug.Log("Skill !");
 
             C_Skill skill = new C_Skill() { Info = new SKillInfo() };
-            skill.Info.Skillid = 1;
+            skill.Info.Skillid = 2;
             Managers.Network.Send(skill);
 
             //State = CreatureState.Skill;

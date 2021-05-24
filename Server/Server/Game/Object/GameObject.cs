@@ -5,26 +5,45 @@ using System.Text;
 
 namespace Server.Game
 {
-    public class Player
+    public class GameObject
     {
-        public PlayerInfo Info { get; set; } = new PlayerInfo() { PosInfo = new PositionInfo() };
+        public GameObjectType ObjectType { get; protected set; } = GameObjectType.Monster;
+
+        public int Id
+        {
+            get { return Info.ObjectId; }
+            set { Info.ObjectId = value; }
+        }
+
         // 내가 어느 게임 방에 속해있는지..
         public GameRoom Room { get; set; }
 
-        public ClientSession Session { get; set; }
+        public ObjectInfo Info { get; set; } = new ObjectInfo() { PosInfo = new PositionInfo() };
+
+        public PositionInfo PosInfo { get; private set; } = new PositionInfo();
+
+        public GameObject()
+        {
+            Info.PosInfo = PosInfo;
+        }
 
         public Vector2int CellPos
         {
             get
             {
-                return new Vector2int(Info.PosInfo.PosX, Info.PosInfo.PosY);
+                return new Vector2int(PosInfo.PosX, PosInfo.PosY);
             }
 
             set
             {
-                Info.PosInfo.PosX = value.x;
-                Info.PosInfo.PosY = value.y;
+                PosInfo.PosX = value.x;
+                PosInfo.PosY = value.y;
             }
+        }
+
+        public Vector2int GetFrontCellPos()
+        {
+            return GetFrontCellPos(PosInfo.Movedir);
         }
 
         public Vector2int GetFrontCellPos(MoveDir dir)
@@ -53,6 +72,4 @@ namespace Server.Game
             return cellPos;
         }
     }
-
-    
 }
