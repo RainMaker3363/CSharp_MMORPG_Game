@@ -1,5 +1,6 @@
 ﻿using Google.Protobuf;
 using Google.Protobuf.Protocol;
+using Server.Data;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -211,31 +212,43 @@ namespace Server.Game
 
                 BroadCast(skill);
 
-                if (skillPacket.Info.Skillid == 1)
-                {
-                    // 데미지 판정
-                    Vector2int skillPos = player.GetFrontCellPos(info.PosInfo.Movedir);
-                    GameObject target = _Map.Find(skillPos);
-                    if (target != null)
-                    {
-                        Console.WriteLine("Hit GameObject!");
-                    }
-                }
-                else if(skillPacket.Info.Skillid == 2)
-                {
-                    // 화살 스킬
-                    Arrow arrow = ObjectManager.Instance.Add<Arrow>();
-                    if (arrow == null)
-                        return;
+                Data.SKill SkillData = null;
+                if (DataManager.SkillDict.TryGetValue(skillPacket.Info.Skillid, out SkillData) == false)
+                    return;
 
-                    arrow.Owner = player;
-                    arrow.PosInfo.State = CreatureState.Moving;
-                    arrow.PosInfo.Movedir = player.PosInfo.Movedir;
-                    arrow.PosInfo.PosX = player.PosInfo.PosX;
-                    arrow.PosInfo.PosY = player.PosInfo.PosY;
-                    EnterGame(arrow);
-                }
+                switch(SkillData.skillType)
+                {
+                    case SkillType.SkillAuto:
+                        {
+                            // 데미지 판정
+                            Vector2int skillPos = player.GetFrontCellPos(info.PosInfo.Movedir);
+                            GameObject target = _Map.Find(skillPos);
+                            if (target != null)
+                            {
+                                Console.WriteLine("Hit GameObject!");
+                            }
+                        }
+                        break;
 
+                    case SkillType.SkillProjectile:
+                        {
+                            // 화살 스킬
+                            Arrow arrow = ObjectManager.Instance.Add<Arrow>();
+                            if (arrow == null)
+                                return;
+
+                            arrow.Owner = player;
+                            arrow.Data = SkillData;
+                            arrow.PosInfo.State = CreatureState.Moving;
+                            arrow.PosInfo.Movedir = player.PosInfo.Movedir;
+                            arrow.PosInfo.PosX = player.PosInfo.PosX;
+                            arrow.PosInfo.PosY = player.PosInfo.PosY;
+                            arrow.Speed = SkillData.projectile.speed;
+
+                            EnterGame(arrow);
+                        }
+                        break;
+                }
             }
         }
 

@@ -1,10 +1,9 @@
 ﻿using Google.Protobuf.Protocol;
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
+using System.Text;
 
-namespace Data
+namespace Server.Data
 {
     #region Stat
     [Serializable]
@@ -60,7 +59,7 @@ namespace Data
         public Dictionary<int, SKill> MakeDict()
         {
             Dictionary<int, SKill> dict = new Dictionary<int, SKill>();
-
+         
             foreach (SKill skill in skills)
                 dict.Add(skill.id, skill);
 
