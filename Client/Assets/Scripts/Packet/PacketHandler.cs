@@ -26,7 +26,7 @@ class PacketHandler
 
 		Debug.Log("S_LeaveGameHandler");
 
-		Managers.Object.RemoveMyPlayer();
+		Managers.Object.Clear();
 	}
 
 	public static void S_SpawnHandler(PacketSession session, IMessage packet)
@@ -61,11 +61,11 @@ class PacketHandler
 		if (go == null)
 			return;
 
-		CreatureController cc = go.GetComponent<CreatureController>();
-		if (cc == null)
+		BaseController bc = go.GetComponent<BaseController>();
+		if (bc == null)
 			return;
 
-		cc.PosInfo = MovePacket.PosInfo;
+		bc.PosInfo = MovePacket.PosInfo;
 	}
 
 	public static void S_SkillHandler(PacketSession session, IMessage packet)
@@ -82,5 +82,36 @@ class PacketHandler
 
 		pc.UseSkill(skillPacket.Info.Skillid);
 
+	}
+
+	public static void S_ChangeHpHandler(PacketSession session, IMessage packet)
+	{
+		S_ChangeHp changePacket = packet as S_ChangeHp;
+
+		GameObject go = Managers.Object.FindById(changePacket.Objectid);
+		if (go == null)
+			return;
+
+		CreatureController cc = go.GetComponent<CreatureController>();
+		if (cc == null)
+			return;
+
+		cc.Hp = changePacket.Hp;
+	}
+
+	public static void S_DieHandler(PacketSession session, IMessage packet)
+	{
+		S_Die diePacket = packet as S_Die;
+
+		GameObject go = Managers.Object.FindById(diePacket.Objectid);
+		if (go == null)
+			return;
+
+		CreatureController cc = go.GetComponent<CreatureController>();
+		if (cc == null)
+			return;
+
+		cc.Hp = 0;
+		cc.OnDead();
 	}
 }

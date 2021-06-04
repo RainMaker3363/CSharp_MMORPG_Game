@@ -90,7 +90,41 @@ namespace Server.Game
 
         public virtual void OnDamaged(GameObject attacker, int damage)
         {
+            Stat.Hp = Math.Max(Stat.Hp - damage, 0);
 
+            // Todo
+
+            S_ChangeHp changePacket = new S_ChangeHp();
+            changePacket.Objectid = Id;
+            changePacket.Hp = Stat.Hp;
+
+            Room.BroadCast(changePacket);
+
+            if(Stat.Hp <= 0)
+            {
+                Stat.Hp = 0;
+                OnDead(attacker);
+            }
+        }
+
+        public virtual void OnDead(GameObject attacker)
+        {
+            S_Die diePacket = new S_Die();
+            diePacket.Objectid = Id;
+            diePacket.Attackerid = attacker.Id;
+
+            Room.BroadCast(diePacket);
+
+            GameRoom room = Room;
+            room.LeaveGame(Id);
+
+            Stat.Hp = Stat.MaxHp;
+            PosInfo.State = CreatureState.Idle;
+            PosInfo.Movedir = MoveDir.Down;
+            PosInfo.PosX = 0;
+            PosInfo.PosY = 0;
+
+            room.EnterGame(this);
         }
     }
 }

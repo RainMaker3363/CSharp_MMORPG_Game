@@ -10,12 +10,12 @@ public interface ILoader<Key, Value>
 
 public class DataManager
 {
-    public Dictionary<int, Data.Stat> StatDict { get; private set; } = new Dictionary<int, Data.Stat>();
+    //public Dictionary<int, Data.Stat> StatDict { get; private set; } = new Dictionary<int, Data.Stat>();
     public Dictionary<int, Data.SKill> SkillDict { get; private set; } = new Dictionary<int, Data.SKill>();
 
     public void Init()
     {
-       StatDict = LoadJson<Data.StatData, int, Data.Stat>("StatData").MakeDict();
+       //StatDict = LoadJson<Data.StatData, int, Data.Stat>("StatData").MakeDict();
        SkillDict = LoadJson<Data.SkillData, int, Data.SKill>("SkillData").MakeDict();
     }
 

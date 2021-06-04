@@ -41,7 +41,7 @@ public class MyPlayerController : PlayerController
 
         if (_coSkillCoolTime == null && Input.GetKey(KeyCode.Space))
         {
-            Debug.Log("Skill !");
+            //Debug.Log("Skill !");
 
             C_Skill skill = new C_Skill() { Info = new SKillInfo() };
             skill.Info.Skillid = 2;
@@ -131,7 +131,7 @@ public class MyPlayerController : PlayerController
 
         if (Managers.Map.CanGo(destPos))
         {
-            if (Managers.Object.Find(destPos) == null)
+            if (Managers.Object.FindCreature(destPos) == null)
             {
                 CellPos = destPos;
             }
