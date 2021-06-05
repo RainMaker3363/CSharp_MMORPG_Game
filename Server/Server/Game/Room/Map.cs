@@ -49,6 +49,16 @@ namespace Server.Game
         {
 			return new Vector2int(a.x + b.x, a.y + b.y);
         }
+
+		public static Vector2int operator -(Vector2int a, Vector2int b)
+		{
+			return new Vector2int(a.x - b.x, a.y - b.y);
+		}
+
+		public float magnitude { get { return (float)Math.Sqrt(sqrMagnitude); } }
+		public int sqrMagnitude { get { return (x * x + y * y); } }
+		public int cellDistFromZero { get { return Math.Abs(x) + Math.Abs(y); } }
+
 	}
 
 
@@ -168,7 +178,7 @@ namespace Server.Game
 		int[] _deltaX = new int[] { 0, 0, -1, 1 };
 		int[] _cost = new int[] { 10, 10, 10, 10 };
 
-		public List<Vector2int> FindPath(Vector2int startCellPos, Vector2int destCellPos, bool ignoreDestCollision = false)
+		public List<Vector2int> FindPath(Vector2int startCellPos, Vector2int destCellPos, bool checkObjects = true)
 		{
 			List<Pos> path = new List<Pos>();
 
@@ -224,9 +234,9 @@ namespace Server.Game
 
 					// 유효 범위를 벗어났으면 스킵
 					// 벽으로 막혀서 갈 수 없으면 스킵
-					if (!ignoreDestCollision || next.Y != dest.Y || next.X != dest.X)
+					if (next.Y != dest.Y || next.X != dest.X)
 					{
-						if (CanGo(Pos2Cell(next)) == false) // CellPos
+						if (CanGo(Pos2Cell(next), checkObjects) == false) // CellPos
 							continue;
 					}
 

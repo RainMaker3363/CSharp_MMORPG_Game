@@ -116,7 +116,7 @@ public class PlayerController : CreatureController
         }
     }
 
-    public void UseSkill(int skillid)
+    public override void UseSkill(int skillid)
     {
         if(skillid == 1)
         {
