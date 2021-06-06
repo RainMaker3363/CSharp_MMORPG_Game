@@ -125,6 +125,11 @@ namespace Server.Game
 		public bool ApplyMove(GameObject gameObject, Vector2int dest)
         {
 			ApplyLeave(gameObject);
+
+			if (gameObject.Room == null)
+				return false;
+			if (gameObject.Room._Map != this)
+				return false;
 			
 			PositionInfo posinfo = gameObject.PosInfo;
 			if (CanGo(dest, true) == false)

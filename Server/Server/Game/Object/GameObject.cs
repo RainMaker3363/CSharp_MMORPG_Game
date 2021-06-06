@@ -125,6 +125,9 @@ namespace Server.Game
 
         public virtual void OnDamaged(GameObject attacker, int damage)
         {
+            if (Room == null)
+                return;
+
             Stat.Hp = Math.Max(Stat.Hp - damage, 0);
 
             // Todo
@@ -144,6 +147,9 @@ namespace Server.Game
 
         public virtual void OnDead(GameObject attacker)
         {
+            if (Room == null)
+                return;
+
             S_Die diePacket = new S_Die();
             diePacket.Objectid = Id;
             diePacket.Attackerid = attacker.Id;

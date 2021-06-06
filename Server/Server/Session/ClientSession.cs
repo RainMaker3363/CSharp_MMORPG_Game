@@ -54,7 +54,8 @@ namespace Server
 				MyPlayer.Session = this;
 			}
 
-			RoomManager.Instance.Find(1).EnterGame(MyPlayer);
+			GameRoom room = RoomManager.Instance.Find(1);
+			room.Push(room.EnterGame, MyPlayer);
 
 			//S_Chat chat2 = new S_Chat();
 			//chat2.MergeFrom(sendBuffer, 4, sendBuffer.Length - 4);
@@ -72,7 +73,8 @@ namespace Server
 		{
 			SessionManager.Instance.Remove(this);
 
-			RoomManager.Instance.Find(1).LeaveGame(MyPlayer.Info.ObjectId);
+			GameRoom room = RoomManager.Instance.Find(1);
+			room.Push(room.LeaveGame, MyPlayer.Info.ObjectId);
 
 			Console.WriteLine($"OnDisconnected : {endPoint}");
 		}

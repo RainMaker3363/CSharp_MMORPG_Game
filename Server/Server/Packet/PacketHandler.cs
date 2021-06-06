@@ -25,7 +25,7 @@ class PacketHandler
 			return;
 
 		// 데이터 경합을 막기 위해 한 곳에서 처리하도록 수정했습니다.
-		room.HandleMove(player, movePacket);
+		room.Push(room.HandleMove, player, movePacket);
 	}
 
 	public static void C_SkillHandler(PacketSession session, IMessage packet)
@@ -41,6 +41,6 @@ class PacketHandler
 		if (room == null)
 			return;
 
-		room.HandleSkill(player, SkillPacket);
+		room.Push(room.HandleSkill, player, SkillPacket);
 	}
 }
