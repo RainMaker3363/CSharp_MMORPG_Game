@@ -61,6 +61,11 @@ class PacketHandler
 		if (go == null)
 			return;
 
+		// 다른 플레이어의 좌표만 갱신해줍니다.
+		// 서버의 프레임으로 인해 좌표 밀려나는 현상을 방지
+		if (Managers.Object.MyPlayer.Id == MovePacket.ObjectId)
+			return;
+
 		BaseController bc = go.GetComponent<BaseController>();
 		if (bc == null)
 			return;
